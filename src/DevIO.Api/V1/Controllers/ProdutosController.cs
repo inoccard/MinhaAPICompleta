@@ -33,6 +33,7 @@ namespace DevIO.Api.V1.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
         {
             return _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.ObterProdutosFornecedores());
@@ -48,7 +49,7 @@ namespace DevIO.Api.V1.Controllers
             return produtoViewModel;
         }
 
-        [ClaimsAuthorize("Produto", "Adicionar")]
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
