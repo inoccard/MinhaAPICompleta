@@ -21,9 +21,9 @@ namespace DevIO.Api.V1.Controllers
         private readonly AppSettings _appSettings;
         private readonly ILogger _logger;
 
-        public AuthController(INotificador notificador, 
-                              SignInManager<IdentityUser> signInManager, 
-                              UserManager<IdentityUser> userManager, 
+        public AuthController(INotificador notificador,
+                              SignInManager<IdentityUser> signInManager,
+                              UserManager<IdentityUser> userManager,
                               IOptions<AppSettings> appSettings,
                               IUser user, ILogger<AuthController> logger) : base(notificador, user)
         {
@@ -59,17 +59,17 @@ namespace DevIO.Api.V1.Controllers
 
             return CustomResponse(registerUser);
         }
-    
+
         [HttpPost("entrar")]
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
-
+             
             var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("Usuario "+ loginUser.Email +" logado com sucesso");
+                _logger.LogInformation("Usuario " + loginUser.Email + " logado com sucesso");
                 return CustomResponse(await GerarJwt(loginUser.Email));
             }
             if (result.IsLockedOut)
@@ -93,10 +93,9 @@ namespace DevIO.Api.V1.Controllers
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+
             foreach (var userRole in userRoles)
-            {
                 claims.Add(new Claim("role", userRole));
-            }
 
             var identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
@@ -122,7 +121,7 @@ namespace DevIO.Api.V1.Controllers
                 {
                     Id = user.Id,
                     Email = user.Email,
-                    Claims = claims.Select(c=> new ClaimViewModel{ Type = c.Type, Value = c.Value})
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
                 }
             };
 
