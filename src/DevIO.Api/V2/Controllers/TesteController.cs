@@ -31,8 +31,8 @@ namespace DevIO.Api.V2.Controllers
             //    e.Ship(HttpContext);
             //}
 
-            _logger.LogTrace("Log de Trace");
-            _logger.LogDebug("Log de Debug");
+            _logger.LogTrace("Log de Trace"); // usado apenas para dev
+            _logger.LogDebug("Log de Debug"); // usado apenas para dev
             _logger.LogInformation("Log de Informação");
             _logger.LogWarning("Log de Aviso");
             _logger.LogError("Log de Erro");
